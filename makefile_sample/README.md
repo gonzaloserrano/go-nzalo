@@ -18,6 +18,7 @@ Also has two types of rules for tests and linters: the normal ones and the `-ci`
 # Linters
 
 - fmt
+- imports
 - vet, without alerting when not using [composite literals](https://golang.org/cmd/vet/#hdr-Unkeyed_composite_literals).
 - lint
 - errcheck, without alerting if `Close` returned errors are not checked. Otherwise you would need to wrap the `Close()` inside a closure when deferring it ([source](https://github.com/kisielk/errcheck/issues/101)).
