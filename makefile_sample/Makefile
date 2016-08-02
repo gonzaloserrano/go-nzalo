@@ -9,10 +9,10 @@ default: linters test
 
 # lint tools
 
-linters: fmt lint vet errcheck
+linters: fmt imports lint vet errcheck
 .PHONY: linters
 
-linters-ci: linters-ci-get fmt-ci lint-ci vet-ci errcheck-ci
+linters-ci: linters-ci-get fmt-ci imports-ci lint-ci vet-ci errcheck-ci
 .PHONY: linters-ci
 
 linters-ci-get:
@@ -34,6 +34,14 @@ fmt:
 fmt-ci:
 	fgt gofmt -l $(SOURCES)
 .PHONY: fmt-ci
+
+imports:
+	goimports -w $(SOURCES)
+.PHONY: imports
+
+imports-ci:
+	fgt goimports -d -e $(SOURCES)
+.PHONY: imports-ci
 
 lint:
 	go list ./... | grep -v vendor/ | grep -v Generated | xargs -L1 golint
