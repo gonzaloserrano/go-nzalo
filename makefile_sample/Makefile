@@ -84,6 +84,10 @@ test-color:
 		sed ''/RUN/s//$$(printf "\033[34mRUN\033[0m")/''
 .PHONY: test-color
 
+# bound checking: http://klauspost-talks.appspot.com/2016/go17-compiler.slide#8
+bound-check:
+	go build -gcflags="-d=ssa/check_bce/debug=1" ./... 2>&1 | grep -v vendor
+
 # code coverage
 
 cov:
