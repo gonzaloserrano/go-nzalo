@@ -1,5 +1,7 @@
 #! /bin/bash
 
+# gotc aka go test colorize, pipe to it to get some colors in your go test outputs.
+
 while read -r line
 do
   echo "$line" |

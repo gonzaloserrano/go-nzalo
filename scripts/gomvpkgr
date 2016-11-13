@@ -1,0 +1,15 @@
+#! /bin/bash
+
+# makes gomvpkg work with relative pkg paths AND git support (does not work if the pkg is not tracked).
+
+command -v gomvpkg >/dev/null 2>&1 || { echo >&2 "I require gomvpkg to run. Install with go get golang.org/x/tools/cmd/gomvpkg. Aborting."; exit 1; }
+
+if [ $# -ne 2 ]; then
+    echo >&2 "I require two args: origin package relative path and destination. Aborting."
+    exit 1
+fi
+
+PWD=$(pwd)
+PWD=${PWD#"$GOPATH"}
+PWD=${PWD:5}
+gomvpkg -from "$PWD/$1" -to "$PWD/$2" -vcs_mv_cmd "git mv {{.Src}} {{.Dst}}"
