@@ -1,0 +1,5 @@
+#! /bin/bash
+
+# must be called with . gocd
+
+cd "$GOPATH/src/$1" || exit

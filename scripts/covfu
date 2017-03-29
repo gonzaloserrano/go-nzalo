@@ -1,0 +1,3 @@
+#! /bin/bash
+
+go-carpet -256colors -func "$1" | less -R
