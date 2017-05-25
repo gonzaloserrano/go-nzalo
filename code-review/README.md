@@ -79,6 +79,10 @@ others:
   - use assert.Type in the test
 - [how to handle errors](https://www.goinggo.net/2017/05/design-philosophy-on-logging.html) by Bill K.
   - wrap with [pkg/errors](https://github.com/pkg/errors) and log with `%v`
+  - > Handling an error means:
+    > * The error has been logged.
+    > * The application is back to 100% integrity.
+    > * The current error is not reported any longer.
 - an http.Handler shouldn't repeat sending an errored response more than once;  separate the domain logic from the HTTP layer.
 
 ## performance and concurrency
