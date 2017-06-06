@@ -85,32 +85,35 @@ others:
     > * The current error is not reported any longer.
 - an http.Handler shouldn't repeat sending an errored response more than once;  separate the domain logic from the HTTP layer.
 
-## performance and concurrency
+## concurrency
 
-- [receiver type: value or pointer?](https://github.com/golang/go/wiki/CodeReviewComments#receiver-type)
-- mutex contention profiling tips from Jaana B Dogan:
-  - https://talks.golang.org/2017/state-of-go.slide#23 
-  - http://golang.rakyll.org/mutexprofile/
-- [Writing high performance go talk](http://go-talks.appspot.com/github.com/davecheney/presentations/writing-high-performance-go)
-
-#### goroutines
-
-Be suspicious of anything similar to `go someFunc(...)`:
-- why was it done? 
-  - performance: is there a benchmark for that?
-  - async fire-and-forget logic: does that function return or not a value and/or error that must be handled?
-  - what's the lifetime of that goroutine? you could be leaking them: a goroutine lifetime must be always clear, subscribe to context.Done() to finish it
-    - [more from official core review](https://github.com/golang/go/wiki/CodeReviewComments#goroutine-lifetimes) 
-    - [more from Dave Cheney](http://go-talks.appspot.com/github.com/davecheney/presentations/writing-high-performance-go.slide?utm_source=statuscode&utm_medium=medium#35)
-- protect shared mutable data with Mutex/RWMutex
-  - theory in spanish: [el problema de los lectores/escritores]( https://github.com/gallir/libro_concurrencia/blob/master/chapters/06-semaforos.adoc#lectores-escritores)
-  - `mu sync.Mutex` over the fields it protects
+- protect shared mutable data
+  - with Mutex/RWMutex
+    - theory in spanish: [el problema de los lectores/escritores]( https://github.com/gallir/libro_concurrencia/blob/master/chapters/06-semaforos.adoc#lectores-escritores)
+    - `mu sync.Mutex` over the fields it protects
+    - use `RWMutex` if you have (significantly?) more reads than writes
+  - or avoid sharing state and use message passing via channels
+    - [channel design](https://github.com/ardanlabs/gotraining/tree/master/topics/go#channel-design)
+      - suspect of buffered channels
+    - [principles of designin APIs with channels](https://www.youtube.com/watch?v=hFqXgmor74k)
+  - or use the `atomic` pkg if your state is a primitive (`float64` for e.g)
+    - that's a nice thing for testing using spies in concurrent tests for e.g
+  - or use things like `sync.Once` or `sync.Map` (>= go 1.9)
 - testing:
   - concurrent tests are needed if your code is going to be run concurrently!
   - are tests run with `tests -race` ?
+- be suspicious of anything similar to `go someFunc(...)`: why was it done?
+  - performance: is there a benchmark for that?
+  - async fire-and-forget logic: does that function return or not a value and/or error that must be handled?
+- what's the lifetime of that goroutine? you could be leaking them: a goroutine lifetime must be always clear, subscribe to context.Done() to finish it.
+    - [more from official core review](https://github.com/golang/go/wiki/CodeReviewComments#goroutine-lifetimes) 
+    - [more from Dave Cheney](http://go-talks.appspot.com/github.com/davecheney/presentations/writing-high-performance-go.slide?utm_source=statuscode&utm_medium=medium#35)
 - refs:
   - [pipelines and cancellation](https://blog.golang.org/pipelines)
   - [advanced concurrency patterns](https://blog.golang.org/advanced-go-concurrency-patterns)
+- perf: mutex contention profiling tips from Jaana B Dogan:
+  - https://talks.golang.org/2017/state-of-go.slide#23 
+  - http://golang.rakyll.org/mutexprofile/
 
 ## http
 
@@ -131,13 +134,19 @@ other refs:
   - [initialisms - ID, HTTP etc](https://github.com/golang/go/wiki/CodeReviewComments#initialisms)
   - [receiver name](https://github.com/golang/go/wiki/CodeReviewComments#receiver-names)
     > Don't name result parameters just to avoid declaring a var inside the function
-  
+
 ## gotchas
 
 - [50 Shades of Go](http://devs.cloudimmunity.com/gotchas-and-common-mistakes-in-go-golang/)
 - a time.Ticker must be stopped, otherwise a goroutine is leaked
 - slices hold a referente to the underlying array as explained here and here. Slices are passed by reference, maybe you think you are returning small data but it's underlying array can be huge.
 - interfaces and nil gotcha, see the [understanding nil](https://www.youtube.com/watch?v=ynoY2xz-F8s) talk by Francesc Campoy
+
+## performance
+
+- [receiver type: value or pointer?](https://github.com/golang/go/wiki/CodeReviewComments#receiver-type)
+- [Writing high performance go talk](http://go-talks.appspot.com/github.com/davecheney/presentations/writing-high-performance-go)
+- [Escape Analysis and Memory Profiling - Bill Kennedy @ GopherCon SG 2017](https://www.youtube.com/watch?v=2557w0qsDV0)
 
 ## tests
 
