@@ -102,6 +102,9 @@ others:
 - testing:
   - concurrent tests are needed if your code is going to be run concurrently!
   - are tests run with `tests -race` ?
+  - use parallel subtests when possible to make tests run faster ([official blog post](https://blog.golang.org/subtests))
+    - must capture range vars! `tc := tc // capture range variable`
+    - see also [using goroutines on loop iteration variables](https://github.com/golang/go/wiki/CommonMistakes#using-goroutines-on-loop-iterator-variables)
 - be suspicious of anything similar to `go someFunc(...)`: why was it done?
   - performance: is there a benchmark for that?
   - async fire-and-forget logic: does that function return or not a value and/or error that must be handled?
@@ -165,6 +168,7 @@ other refs:
   - integration
   - example files
   - benchmarks
+- subtests: see concurrency.
 - tags: if you have tagged some tests (e.g _// +build integration_) then you need to run your tests with -tags 
 - t.Run and t.Parallel
   - watch out with test cases in a loop, you need probably something like `tc := tc` before
