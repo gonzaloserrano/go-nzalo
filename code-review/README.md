@@ -45,6 +45,7 @@ others:
 - onion / hexagonal / clean architecture
   - decorators / middlewares: logging, metrics, tracing...
   - see [this go-kit presentation example](https://youtu.be/NX0sHF8ZZgw?t=1344) by Peter Bourgon
+  - and [Embrace the Interface](https://www.youtube.com/watch?v=xyDkyFjzFVc) video by Tomas Senart ([@tsenart](https://twitter.com/tsenart))
 - [code is communication](https://talks.golang.org/2014/readability.slide#44)
 - [api design](https://talks.golang.org/2014/readability.slide#42)
 - [always write the simplest code you can
