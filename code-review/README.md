@@ -46,6 +46,7 @@ others:
   - decorators / middlewares: logging, metrics, tracing...
   - see [this go-kit presentation example](https://youtu.be/NX0sHF8ZZgw?t=1344) by Peter Bourgon
   - and [Embrace the Interface](https://www.youtube.com/watch?v=xyDkyFjzFVc) video by Tomas Senart ([@tsenart](https://twitter.com/tsenart))
+  - [another good blog post with examples](https://medium.com/@matryer/writing-middleware-in-golang-and-how-go-makes-it-so-much-fun-4375c1246e81)
 - [code is communication](https://talks.golang.org/2014/readability.slide#44)
 - [api design](https://talks.golang.org/2014/readability.slide#42)
 - [always write the simplest code you can
