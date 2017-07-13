@@ -54,6 +54,7 @@ others:
 - [coupling with logger, metrics etc](https://peter.bourgon.org/go-best-practices-2016/#logging-and-instrumentation):
   - prefer decorator/middleware pattern
 - avoid [primitive obsession - C#](http://enterprisecraftsmanship.com/2015/03/07/functional-c-primitive-obsession/)
+- [accept interfaces, return concrete types](http://idiomaticgo.com/post/best-practice/accept-interfaces-return-structs/)
 
 ## pkg design
 
