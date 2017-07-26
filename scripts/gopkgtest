@@ -1,0 +1,5 @@
+#! /bin/sh
+
+# execute go tests by package and with colors
+
+go list -f '{{if len .TestGoFiles}}"go test -v {{.ImportPath}}"{{end}}' ./... | xargs -L 1 sh -c | gocolorize

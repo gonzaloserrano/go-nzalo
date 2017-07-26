@@ -1,0 +1,3 @@
+#! /bin/bash
+
+go-carpet -256colors -file "$2" -args "--run $1" | less -R
