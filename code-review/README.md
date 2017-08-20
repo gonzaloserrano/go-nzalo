@@ -59,13 +59,17 @@ others:
 
 ## pkg design
 
+- learn and follow the stdlib design
 - packagitis: this is not PHP or Java, where you put classes wherever and then you refer to them with the namespace.
 - watch out import cycles! Go makes you think at compiler time how your types will be grouped.
 - are the exported types needed to be exported?
   - maybe they are just used for tests
+- reduce the number of package dependencies
+    - sometimes [duplication is better than the wrong abstraction](https://www.sandimetz.com/blog/2016/1/20/the-wrong-abstraction?duplication)
 - Bill Kennedy's resources:
   - [blog article](https://www.goinggo.net/2017/02/design-philosophy-on-packaging.html)
   - [GopherCon India '17 video](https://www.youtube.com/watch?v=spKM5CyBwJA)
+- [Style guides for go pkgs - @rakyll](https://rakyll.org/style-packages)
 
 ## errors
 
@@ -75,6 +79,8 @@ others:
 - [indent error flow: early returns](https://github.com/golang/go/wiki/CodeReviewComments#indent-error-flow)
   - [talk: keep the normal code path at a minimal indentation]( https://talks.golang.org/2014/readability.slide#27)
 - [errors shouldn't be capitalized](https://github.com/golang/go/wiki/CodeReviewComments#error-strings)
+- put tests in a different package
+    - else name the file `*_internal_test.go`
 - don't tag error messages in datadog metrics
 - modeling:
   - don't couple tests to error messages
@@ -87,6 +93,7 @@ others:
     > * The application is back to 100% integrity.
     > * The current error is not reported any longer.
 - an http.Handler shouldn't repeat sending an errored response more than once;  separate the domain logic from the HTTP layer.
+- don't panic, return errors - specially in libs.
 
 ## concurrency
 
@@ -106,14 +113,15 @@ others:
   - concurrent tests are needed if your code is going to be run concurrently!
   - are tests run with `tests -race` ?
   - use parallel subtests when possible to make tests run faster ([official blog post](https://blog.golang.org/subtests))
-    - must capture range vars! `tc := tc // capture range variable`
-    - see also [using goroutines on loop iteration variables](https://github.com/golang/go/wiki/CommonMistakes#using-goroutines-on-loop-iterator-variables)
+    - must capture range vars! `tc := tc // capture range variable` (also see next point)
+- watch out when launching goroutines inside loops, see [using goroutines on loop iteration variables](https://github.com/golang/go/wiki/CommonMistakes#using-goroutines-on-loop-iterator-variables)
 - be suspicious of anything similar to `go someFunc(...)`: why was it done?
   - performance: is there a benchmark for that?
   - async fire-and-forget logic: does that function return or not a value and/or error that must be handled?
 - what's the lifetime of that goroutine? you could be leaking them: a goroutine lifetime must be always clear, subscribe to context.Done() to finish it.
     - [more from official core review](https://github.com/golang/go/wiki/CodeReviewComments#goroutine-lifetimes) 
     - [more from Dave Cheney](http://go-talks.appspot.com/github.com/davecheney/presentations/writing-high-performance-go.slide?utm_source=statuscode&utm_medium=medium#35)
+- if you write libs, leave concurrency to the consumer of the lib
 - refs:
   - [pipelines and cancellation](https://blog.golang.org/pipelines)
   - [advanced concurrency patterns](https://blog.golang.org/advanced-go-concurrency-patterns)
