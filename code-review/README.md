@@ -56,8 +56,9 @@ others:
   - prefer decorator/middleware pattern
 - avoid [primitive obsession - C#](http://enterprisecraftsmanship.com/2015/03/07/functional-c-primitive-obsession/)
 - [accept interfaces, return concrete types](http://idiomaticgo.com/post/best-practice/accept-interfaces-return-structs/)
+- [DDD in go](https://gist.github.com/abdullin/3e3fd199674255e4d206)
 
-## pkg design
+## package design
 
 - learn and follow the stdlib design
 - packagitis: this is not PHP or Java, where you put classes wherever and then you refer to them with the namespace.
@@ -69,7 +70,10 @@ others:
 - Bill Kennedy's resources:
   - [blog article](https://www.goinggo.net/2017/02/design-philosophy-on-packaging.html)
   - [GopherCon India '17 video](https://www.youtube.com/watch?v=spKM5CyBwJA)
-- [Style guides for go pkgs - @rakyll](https://rakyll.org/style-packages)
+- [style guides for go pkgs - @rakyll](https://rakyll.org/style-packages):
+    - use multiple files
+    - keep types closer to where they are used
+    - organize by responsibility (e.g avoid package `model`)
 
 ## errors
 
