@@ -136,7 +136,7 @@ others:
 ## http
 
 - don't use `http.ListenAndServe`. Use `http.Server{}` with good defaults as explained in [how to handle http timeouts in go](https://blog.cloudflare.com/the-complete-guide-to-golang-net-http-timeouts/).
-- an HTTP client must close the response body when finished with it, see the doc.
+- an HTTP client [must close the response body](https://golang.org/pkg/net/http/#pkg-overview) when finished reading with it.
 
 ## naming
 
