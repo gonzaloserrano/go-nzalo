@@ -126,6 +126,7 @@ others:
     - [more from official core review](https://github.com/golang/go/wiki/CodeReviewComments#goroutine-lifetimes) 
     - [more from Dave Cheney](http://go-talks.appspot.com/github.com/davecheney/presentations/writing-high-performance-go.slide?utm_source=statuscode&utm_medium=medium#35)
 - if you write libs, leave concurrency to the consumer of the lib
+- [the channel closing principle](http://www.tapirgames.com/blog/golang-channel-closing): don't close a channel from the receiver side and don't close a channel if the channel has multiple concurrent senders.
 - refs:
   - [pipelines and cancellation](https://blog.golang.org/pipelines)
   - [advanced concurrency patterns](https://blog.golang.org/advanced-go-concurrency-patterns)
@@ -198,3 +199,8 @@ Taken from [the little mocker](https://8thlight.com/blog/uncle-bob/2014/05/14/Th
 - **stubs** provide canned answers to calls made during the test, usually not responding at all to anything outside what's programmed in for the test.
 - **spies** are stubs that also record some information based on how they were called. One form of this might be an email service that records how many messages it was sent.
 - **mocks** are pre-programmed with expectations which form a specification of the calls they are expected to receive. They can throw an exception if they receive a call they don't expect and are checked during verification to ensure they got all the calls they were expecting.
+
+## aws-sdk-go
+
+- Create just a single session in the top level, see [the doc](https://github.com/aws/aws-sdk-go/blob/master/aws/session/doc.go#L4-L11)
+- Every service package has an interface that you can use for embedding in test, see an example in the [official blog](https://aws.amazon.com/blogs/developer/mocking-out-then-aws-sdk-for-go-for-unit-testing)
