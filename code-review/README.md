@@ -10,18 +10,25 @@ This is an informal, WIP list of the things things I ([@gonzaloserrano](https://
 - [go best practices](https://peter.bourgon.org/go-best-practices-2016/) by Peter Bourgon
 - [ultimate go design guidelines](https://github.com/ardanlabs/gotraining/blob/master/topics/go/README.md) by Ardan Labs
 
-## github
+## code reviewing & github
 
-- better multiple PRs with small commits than multiple-commit PRs
-- if have deps changes, separate the commit from code updates from the deps 
-- squash, rebase or merge
-  - deps in different commit -> merge
-  - rest of code in same commit
-- changes should:
-  - be in green in current go version and tip
-    - this can be configured in TravisCI for e.g
-  - have same or better coverage, or < 1% of less coverage if really needed
-    - use e.g coveralls.io
+- the [guidelines for faster PR reviews](https://github.com/kubernetes/community/blob/master/contributors/devel/pull-requests.md#best-practices-for-faster-reviews) from the Kubernetes project are a must. A quick summary:
+    - do small commits and, even better, small PRs
+    - use separate PRs for fixes not related with your feature
+    - add a different commit for review changes so it's easy to review them instead of the whole patch
+    - test and document your code
+    - don't add features you don't need
+- other guidelines:
+    - prefer documentation as code (example tests files) over READMEs
+    - separate the vendor updates in a different commit
+    - choose a good GitHub merge strategy:
+      - choose merge when:
+          - multiple commits 
+          - deps in different commit
+      - choose squash if you just have a single commit to avoid the extra merge commit
+    - do Continuous Integration (CI) to ensure the code quality:
+        - tests are in green (`go test -race` in TravisCI or CircleCI)
+        - new code or changes in functionality has the corresponding tests (e.g `gocovmerge` + codecov.io or coveralls.io)
 
 ## code linting
 
@@ -54,9 +61,11 @@ others:
 - structs with just one field: `has-a` -> `is-a`
 - [coupling with logger, metrics etc](https://peter.bourgon.org/go-best-practices-2016/#logging-and-instrumentation):
   - prefer decorator/middleware pattern
+  - don't log everything, maybe using metrics is better ([blog post by @copyconstruct](https://medium.com/@copyconstruct/logs-and-metrics-6d34d3026e38))
 - avoid [primitive obsession - C#](http://enterprisecraftsmanship.com/2015/03/07/functional-c-primitive-obsession/)
 - [accept interfaces, return concrete types](http://idiomaticgo.com/post/best-practice/accept-interfaces-return-structs/)
 - [DDD in go](https://gist.github.com/abdullin/3e3fd199674255e4d206)
+- [think about using functional options in your constructors](https://dave.cheney.net/2014/10/17/functional-options-for-friendly-apis)
 
 ## package design
 
@@ -138,6 +147,7 @@ others:
 
 - don't use `http.ListenAndServe`. Use `http.Server{}` with good defaults as explained in [how to handle http timeouts in go](https://blog.cloudflare.com/the-complete-guide-to-golang-net-http-timeouts/).
 - an HTTP client [must close the response body](https://golang.org/pkg/net/http/#pkg-overview) when finished reading with it.
+- when creating HTTP-based libs, allow injecting an `http.Client`.
 
 ## naming
 
