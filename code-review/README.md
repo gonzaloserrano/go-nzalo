@@ -35,12 +35,13 @@ This is an informal, WIP list of the things things I ([@gonzaloserrano](https://
 The code should pass a linter step in the CI pipeline:
 
 mandatory:
-  - gofmt: official tool  to make all the code follow the same syntax guidelines.
-  - go vet: official tool to find quircks in your code.
-  - go lint: make your code follow the official code review guidelines.
+  - [gofmt](@todo): official tool  to make all the code follow the same syntax guidelines.
+  - [go vet](@todo): official tool to find quirks in your code.
+  - [go lint](@todo): make your code follow the [official code review guidelines](https://github.com/golang/go/wiki/CodeReviewComments)
+  - [goimports](@todo): @todo
 
 others:
-  - errcheck with -blank: check your errors are handled properly
+  - [errcheck with -blank: check your errors are handled properly
   - interfacer: use the narrowest interface available.
   - gosimple: simplify your code whenever possible.
   - statticcheck: advanced tool to find subtle improvements and bugs in your code.
@@ -50,18 +51,19 @@ others:
 ## software design
 
 - onion / hexagonal / clean architecture
-  - decorators / middlewares: logging, metrics, tracing...
+  - use decorator/middleware when possible
+    - e.g don't pollute your `http.Handler`s with to instrumentation (logging, metrics, tracing)
   - see [this go-kit presentation example](https://youtu.be/NX0sHF8ZZgw?t=1344) by Peter Bourgon
   - and [Embrace the Interface](https://www.youtube.com/watch?v=xyDkyFjzFVc) video by Tomas Senart ([@tsenart](https://twitter.com/tsenart))
   - [another good blog post with examples](https://medium.com/@matryer/writing-middleware-in-golang-and-how-go-makes-it-so-much-fun-4375c1246e81)
+- example: [coupling with logger, metrics etc](https://peter.bourgon.org/go-best-practices-2016/#logging-and-instrumentation):
+  - don't log everything, maybe using metrics is better ([blog post by @copyconstruct](https://medium.com/@copyconstruct/logs-and-metrics-6d34d3026e38))
+  - [the RED method](https://www.weave.works/blog/the-red-method-key-metrics-for-microservices-architecture/) for choosing metrics.
 - [code is communication](https://talks.golang.org/2014/readability.slide#44)
 - [api design](https://talks.golang.org/2014/readability.slide#42)
 - [always write the simplest code you can
 ](http://go-talks.appspot.com/github.com/davecheney/presentations/writing-high-performance-go.slide?utm_source=statuscode&utm_medium=medium#43)
 - structs with just one field: `has-a` -> `is-a`
-- [coupling with logger, metrics etc](https://peter.bourgon.org/go-best-practices-2016/#logging-and-instrumentation):
-  - prefer decorator/middleware pattern
-  - don't log everything, maybe using metrics is better ([blog post by @copyconstruct](https://medium.com/@copyconstruct/logs-and-metrics-6d34d3026e38))
 - avoid [primitive obsession - C#](http://enterprisecraftsmanship.com/2015/03/07/functional-c-primitive-obsession/)
 - [accept interfaces, return concrete types](http://idiomaticgo.com/post/best-practice/accept-interfaces-return-structs/)
 - [DDD in go](https://gist.github.com/abdullin/3e3fd199674255e4d206)
@@ -110,9 +112,12 @@ others:
 
 ## concurrency
 
-- protect shared mutable data
+- careful:
+    - go makes concurrency easy enough to be dangerous [source](https://www.youtube.com/watch?v=DJ4d_PZ6Gns&t=1270s)
+    - shared mutable state is the root of all evil [source](http://henrikeichenhardt.blogspot.com.es/2013/06/why-shared-mutable-state-is-root-of-all.html)
+- how protect shared mutable data
   - with Mutex/RWMutex
-    - theory in spanish: [el problema de los lectores/escritores]( https://github.com/gallir/libro_concurrencia/blob/master/chapters/06-semaforos.adoc#lectores-escritores)
+    - theory in spanish: [el problema de los lectores/escritores](https://github.com/gallir/libro_concurrencia/blob/master/chapters/06-semaforos.adoc#lectores-escritores)
     - `mu sync.Mutex` over the fields it protects
     - use `RWMutex` if you have (significantly?) more reads than writes
   - or avoid sharing state and use message passing via channels
@@ -123,25 +128,28 @@ others:
     - that's a nice thing for testing using spies in concurrent tests for e.g
   - or use things like `sync.Once` or `sync.Map` (>= go 1.9)
 - testing:
-  - concurrent tests are needed if your code is going to be run concurrently!
-  - are tests run with `tests -race` ?
+  - _good_ concurrent tests are mandatory and run with `-race` flag
   - use parallel subtests when possible to make tests run faster ([official blog post](https://blog.golang.org/subtests))
     - must capture range vars! `tc := tc // capture range variable` (also see next point)
-- watch out when launching goroutines inside loops, see [using goroutines on loop iteration variables](https://github.com/golang/go/wiki/CommonMistakes#using-goroutines-on-loop-iterator-variables)
-- be suspicious of anything similar to `go someFunc(...)`: why was it done?
-  - performance: is there a benchmark for that?
+- watch out when:
+  - launching goroutines inside loops, see [using goroutines on loop iteration variables](https://github.com/golang/go/wiki/CommonMistakes#using-goroutines-on-loop-iterator-variables)
+  - passing pointers through channels
+  - you see the `go` keyword around without much explanation and tests
+    - why was it done?
+    - is there a benchmark for that?
   - async fire-and-forget logic: does that function return or not a value and/or error that must be handled?
-- what's the lifetime of that goroutine? you could be leaking them: a goroutine lifetime must be always clear, subscribe to context.Done() to finish it.
-    - [more from official core review](https://github.com/golang/go/wiki/CodeReviewComments#goroutine-lifetimes) 
-    - [more from Dave Cheney](http://go-talks.appspot.com/github.com/davecheney/presentations/writing-high-performance-go.slide?utm_source=statuscode&utm_medium=medium#35)
-- if you write libs, leave concurrency to the consumer of the lib
+- goroutine lifetime:
+  - watch out for leaks: lifetime must be always clear, e.g terminate a `for-select` subscribing to context.Done() to finish return.
+  - [more from official core review](https://github.com/golang/go/wiki/CodeReviewComments#goroutine-lifetimes) 
+  - [more from Dave Cheney](http://go-talks.appspot.com/github.com/davecheney/presentations/writing-high-performance-go.slide?utm_source=statuscode&utm_medium=medium#35)
+- if you write libs, leave concurrency to the consumer of the lib when possible
+    - your code will be simpler, and the clients will choose the kind of concurrency they want
 - [the channel closing principle](http://www.tapirgames.com/blog/golang-channel-closing): don't close a channel from the receiver side and don't close a channel if the channel has multiple concurrent senders.
 - refs:
   - [pipelines and cancellation](https://blog.golang.org/pipelines)
   - [advanced concurrency patterns](https://blog.golang.org/advanced-go-concurrency-patterns)
-- perf: mutex contention profiling tips from Jaana B Dogan:
-  - https://talks.golang.org/2017/state-of-go.slide#23 
-  - http://golang.rakyll.org/mutexprofile/
+- performance: 
+  - mutex contention [profiling](https://talks.golang.org/2017/state-of-go.slide#23 ) [tips](http://golang.rakyll.org/mutexprofile/) from Jaana B Dogan
 
 ## http
 
@@ -171,12 +179,6 @@ other refs:
 - slices hold a referente to the underlying array as explained here and here. Slices are passed by reference, maybe you think you are returning small data but it's underlying array can be huge.
 - interfaces and nil gotcha, see the [understanding nil](https://www.youtube.com/watch?v=ynoY2xz-F8s) talk by Francesc Campoy
 
-## performance
-
-- [receiver type: value or pointer?](https://github.com/golang/go/wiki/CodeReviewComments#receiver-type)
-- [Writing high performance go talk](http://go-talks.appspot.com/github.com/davecheney/presentations/writing-high-performance-go)
-- [Escape Analysis and Memory Profiling - Bill Kennedy @ GopherCon SG 2017](https://www.youtube.com/watch?v=2557w0qsDV0)
-
 ## tests
 
 - test names & scope
@@ -199,18 +201,28 @@ other refs:
 - t.Run and t.Parallel
   - watch out with test cases in a loop, you need probably something like `tc := tc` before
 - assert should have `(expected, actual)` not on the contrary
-
-#### test doubles naming
-
-Taken from [the little mocker](https://8thlight.com/blog/uncle-bob/2014/05/14/TheLittleMocker.html) by Uncle Bob.
-
-- **dummy** objects are passed around but never actually used. Usually they are just used to fill parameter lists.
-- **fake** objects actually have working implementations, but usually take some shortcut which makes them not suitable for production (an InMemoryTestDatabase is a good example).
-- **stubs** provide canned answers to calls made during the test, usually not responding at all to anything outside what's programmed in for the test.
-- **spies** are stubs that also record some information based on how they were called. One form of this might be an email service that records how many messages it was sent.
-- **mocks** are pre-programmed with expectations which form a specification of the calls they are expected to receive. They can throw an exception if they receive a call they don't expect and are checked during verification to ensure they got all the calls they were expecting.
+- test doubles naming (from [the little mocker](https://8thlight.com/blog/uncle-bob/2014/05/14/TheLittleMocker.html) by Uncle Bob):
+  - **dummy** objects are passed around but never actually used
+  - **fake** objects actually have working implementations, but usually take some shortcut which makes them not suitable for production (an InMemoryTestDatabase is a good example).
+  - **stubs** provide canned answers to calls made during the test, usually not responding at all to anything outside what's programmed in for the test.
+  - **spies** are stubs that also record some information based on how they were called. One form of this might be an email service that records how many messages it was sent.
+  - **mocks** are pre-programmed with expectations which form a specification of the calls they are expected to receive. They can throw an exception if they receive a call they don't expect and are checked during verification to ensure they got all the calls they were expecting.
 
 ## aws-sdk-go
 
 - Create just a single session in the top level, see [the doc](https://github.com/aws/aws-sdk-go/blob/master/aws/session/doc.go#L4-L11)
 - Every service package has an interface that you can use for embedding in test, see an example in the [official blog](https://aws.amazon.com/blogs/developer/mocking-out-then-aws-sdk-for-go-for-unit-testing)
+
+## performance
+
+- [receiver type: value or pointer?](https://github.com/golang/go/wiki/CodeReviewComments#receiver-type)
+- [Writing high performance go talk](http://go-talks.appspot.com/github.com/davecheney/presentations/writing-high-performance-go)
+- [Escape Analysis and Memory Profiling - Bill Kennedy @ GopherCon SG 2017](https://www.youtube.com/watch?v=2557w0qsDV0)
+- from [so you wanna go fast?](https://youtu.be/DJ4d_PZ6Gns?t=2193) talk by by Tyler Treat:
+  - the stdlib provides general solutions, and you should generally use them.
+  - small, idiomatic changes can have profound performance impact.
+  - learn and use tools from the go toolchain to analyze the performance.
+  - the performance can change a lot between go versions, review your optimizations.
+  - code is marginal, architecture is material: the big wins come from architecutre, do it right first.
+  - mechanical sympathy: know how yoour abstractions actually work in your hardware, go makes this possible.
+  - optimize for the right trade-off: optimizing for performance means trading something else
