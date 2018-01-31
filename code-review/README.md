@@ -112,9 +112,9 @@ others:
 
 ## concurrency
 
-- careful:
-    - go makes concurrency easy enough to be dangerous [source](https://www.youtube.com/watch?v=DJ4d_PZ6Gns&t=1270s)
-    - shared mutable state is the root of all evil [source](http://henrikeichenhardt.blogspot.com.es/2013/06/why-shared-mutable-state-is-root-of-all.html)
+- read [golang concurrency tricks](https://udhos.github.io/golang-concurrency-tricks/)
+- go makes concurrency easy enough to be dangerous [source](https://www.youtube.com/watch?v=DJ4d_PZ6Gns&t=1270s)
+- shared mutable state is the root of all evil [source](http://henrikeichenhardt.blogspot.com.es/2013/06/why-shared-mutable-state-is-root-of-all.html)
 - how protect shared mutable data
   - with Mutex/RWMutex
     - theory in spanish: [el problema de los lectores/escritores](https://github.com/gallir/libro_concurrencia/blob/master/chapters/06-semaforos.adoc#lectores-escritores)
