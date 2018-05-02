@@ -9,6 +9,7 @@ This is an informal, WIP list of the things things I ([@gonzaloserrano](https://
 - [best practices for PR reviews](https://github.com/kubernetes/community/blob/master/contributors/devel/pull-requests.md#best-practices-for-faster-reviews) by k8s team
 - [go best practices](https://peter.bourgon.org/go-best-practices-2016/) by Peter Bourgon
 - [ultimate go design guidelines](https://github.com/ardanlabs/gotraining/blob/master/topics/go/README.md) by Ardan Labs
+- [idiomatic go](https://about.sourcegraph.com/go/idiomatic-go) by Sourcegraph
 
 ## code reviewing & github
 
@@ -61,6 +62,7 @@ others:
   - [the RED method](https://www.weave.works/blog/the-red-method-key-metrics-for-microservices-architecture/) for choosing metrics.
 - [code is communication](https://talks.golang.org/2014/readability.slide#44)
 - [api design](https://talks.golang.org/2014/readability.slide#42)
+    - [make your APIs sync](https://about.sourcegraph.com/go/idiomatic-go/#asynchronous-apis)
 - [always write the simplest code you can
 ](http://go-talks.appspot.com/github.com/davecheney/presentations/writing-high-performance-go.slide?utm_source=statuscode&utm_medium=medium#43)
 - structs with just one field: `has-a` -> `is-a`
@@ -144,6 +146,7 @@ others:
   - [more from Dave Cheney](http://go-talks.appspot.com/github.com/davecheney/presentations/writing-high-performance-go.slide?utm_source=statuscode&utm_medium=medium#35)
 - if you write libs, leave concurrency to the consumer of the lib when possible
     - your code will be simpler, and the clients will choose the kind of concurrency they want
+- [don't expose channels](https://about.sourcegraph.com/go/idiomatic-go/#asynchronous-apis)
 - [the channel closing principle](http://www.tapirgames.com/blog/golang-channel-closing): don't close a channel from the receiver side and don't close a channel if the channel has multiple concurrent senders.
 - refs:
   - [pipelines and cancellation](https://blog.golang.org/pipelines)
