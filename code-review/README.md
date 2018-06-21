@@ -42,7 +42,7 @@ mandatory:
   - [goimports](@todo): @todo
 
 others:
-  - [errcheck with -blank: check your errors are handled properly
+  - errcheck with -blank: check your errors are handled properly
   - interfacer: use the narrowest interface available.
   - gosimple: simplify your code whenever possible.
   - statticcheck: advanced tool to find subtle improvements and bugs in your code.
@@ -158,6 +158,7 @@ others:
 
 - don't use `http.ListenAndServe`. Use `http.Server{}` with good defaults as explained in [how to handle http timeouts in go](https://blog.cloudflare.com/the-complete-guide-to-golang-net-http-timeouts/).
 - an HTTP client [must close the response body](https://golang.org/pkg/net/http/#pkg-overview) when finished reading with it.
+  - [closing the body must be done after error checking](https://stackoverflow.com/a/42525774/547956)
 - when creating HTTP-based libs, allow injecting an `http.Client`.
 
 ## naming
