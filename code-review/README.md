@@ -200,6 +200,7 @@ other refs:
   - integration
   - example files
   - benchmarks
+    - [the right way](https://docs.google.com/presentation/d/e/2PACX-1vQ9aFgICdqCz5pjrVJ4zFZrWtTKbfGYFPCOKsScomkLoE1Kzk3DVd9-u4k_XgZekqJ7nl-YTy4lD8Uq/pub?slide=id.g550f852d27_228_0) by [Daniel Martí](https://twitter.com/mvdan_)
 - subtests: see concurrency.
 - tags: if you have tagged some tests (e.g _// +build integration_) then you need to run your tests with -tags 
 - t.Run and t.Parallel
