@@ -6,7 +6,7 @@ This is an informal, WIP list of the things things I ([@gonzaloserrano](https://
 
 - [go wiki: code review comments](https://github.com/golang/go/wiki/CodeReviewComments)
 - [go doc: effective go](https://golang.org/doc/effective_go.html)
-- [best practices for PR reviews](https://github.com/kubernetes/community/blob/master/contributors/devel/pull-requests.md#best-practices-for-faster-reviews) by k8s team
+- [best practices for PR reviews](https://github.com/kubernetes/community/blob/master/contributors/guide/pull-requests.md#best-practices-for-faster-reviews) by k8s team
 - [go best practices](https://peter.bourgon.org/go-best-practices-2016/) by Peter Bourgon
 - [ultimate go design guidelines](https://github.com/ardanlabs/gotraining/blob/master/topics/go/README.md) by Ardan Labs
 - [idiomatic go](https://about.sourcegraph.com/go/idiomatic-go) by Sourcegraph
