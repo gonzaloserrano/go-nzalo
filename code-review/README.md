@@ -10,6 +10,7 @@ This is an informal, WIP list of the things things I ([@gonzaloserrano](https://
 - [go best practices](https://peter.bourgon.org/go-best-practices-2016/) by Peter Bourgon
 - [ultimate go design guidelines](https://github.com/ardanlabs/gotraining/blob/master/topics/go/README.md) by Ardan Labs
 - [idiomatic go](https://about.sourcegraph.com/go/idiomatic-go) by Sourcegraph
+- [the zen of go](https://dave.cheney.net/2020/02/23/the-zen-of-go)
 
 ## code reviewing & github
 
