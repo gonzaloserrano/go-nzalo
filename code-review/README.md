@@ -145,7 +145,7 @@ others:
   - watch out for leaks: lifetime must be always clear, e.g terminate a `for-select` subscribing to context.Done() to finish return.
   - [more from official core review](https://github.com/golang/go/wiki/CodeReviewComments#goroutine-lifetimes) 
   - [more from Dave Cheney](http://go-talks.appspot.com/github.com/davecheney/presentations/writing-high-performance-go.slide?utm_source=statuscode&utm_medium=medium#35)
-- if you write libs, leave concurrency to the consumer of the lib when possible
+- if you write libs, leave concurrency to the callerwhen possible. See [Zen Of Go](https://the-zen-of-go.netlify.app/).
     - your code will be simpler, and the clients will choose the kind of concurrency they want
 - [don't expose channels](https://about.sourcegraph.com/go/idiomatic-go/#asynchronous-apis)
 - [the channel closing principle](http://www.tapirgames.com/blog/golang-channel-closing): don't close a channel from the receiver side and don't close a channel if the channel has multiple concurrent senders.
