@@ -34,21 +34,9 @@ This is an informal, WIP list of the things things I ([@gonzaloserrano](https://
 
 ## code linting
 
-The code should pass a linter step in the CI pipeline:
+Just use [golangci-lint](https://golangci-lint.run/). The defaults are fine. The more linters you enable, the more you can avoid nitpicks in the PR reviews.
 
-mandatory:
-  - [gofmt](@todo): official tool  to make all the code follow the same syntax guidelines.
-  - [go vet](@todo): official tool to find quirks in your code.
-  - [go lint](@todo): make your code follow the [official code review guidelines](https://github.com/golang/go/wiki/CodeReviewComments)
-  - [goimports](@todo): @todo
-
-others:
-  - errcheck with -blank: check your errors are handled properly
-  - interfacer: use the narrowest interface available.
-  - gosimple: simplify your code whenever possible.
-  - statticcheck: advanced tool to find subtle improvements and bugs in your code.
-
-[gonmetalinter](https://github.com/gonzaloserrano/go-nzalo/blob/master/scripts/gonmetalinter): a dummy shell script I did for launching some linters
+As a formatter, I personally prefer [gofumpt: a stricter gofmt](https://github.com/mvdan/gofumpt).
 
 ## software design
 
