@@ -4,13 +4,18 @@ This is an informal, WIP list of the things things I ([@gonzaloserrano](https://
 
 ## general refs
 
+#### Google
 - [go wiki: code review comments](https://github.com/golang/go/wiki/CodeReviewComments)
 - [go doc: effective go](https://golang.org/doc/effective_go.html)
-- [best practices for PR reviews](https://github.com/kubernetes/community/blob/master/contributors/guide/pull-requests.md#best-practices-for-faster-reviews) by k8s team
+- go proverbs: [website](https://go-proverbs.github.io/) - [talk video](https://www.youtube.com/watch?v=PAAkCSZUG1c)
+
+#### 3rd party
+
 - [go best practices](https://peter.bourgon.org/go-best-practices-2016/) by Peter Bourgon
 - [ultimate go design guidelines](https://github.com/ardanlabs/gotraining/blob/master/topics/go/README.md) by Ardan Labs
 - [idiomatic go](https://about.sourcegraph.com/go/idiomatic-go) by Sourcegraph
 - [the zen of go](https://dave.cheney.net/2020/02/23/the-zen-of-go) by Dave Cheney
+- [best practices for PR reviews](https://github.com/kubernetes/community/blob/master/contributors/guide/pull-requests.md#best-practices-for-faster-reviews) by k8s team
 
 ## code reviewing & github
 
@@ -69,6 +74,10 @@ As a formatter, I personally prefer [gofumpt: a stricter gofmt](https://github.c
   - maybe they are just used for tests
 - reduce the number of package dependencies
     - sometimes [duplication is better than the wrong abstraction](https://www.sandimetz.com/blog/2016/1/20/the-wrong-abstraction?duplication)
+
+#### other refs
+
+- Ben Johnson article on [standard package layout](https://medium.com/@benbjohnson/standard-package-layout-7cdbc8391fc1)
 - Bill Kennedy's resources:
   - [blog article](https://www.goinggo.net/2017/02/design-philosophy-on-packaging.html)
   - [GopherCon India '17 video](https://www.youtube.com/watch?v=spKM5CyBwJA)
