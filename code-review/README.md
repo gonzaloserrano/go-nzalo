@@ -15,7 +15,6 @@ This is an informal, WIP list of the things things I ([@gonzaloserrano](https://
 - [ultimate go design guidelines](https://github.com/ardanlabs/gotraining/blob/master/topics/go/README.md) by Ardan Labs
 - [idiomatic go](https://about.sourcegraph.com/go/idiomatic-go) by Sourcegraph
 - [the zen of go](https://dave.cheney.net/2020/02/23/the-zen-of-go) by Dave Cheney
-- [best practices for PR reviews](https://github.com/kubernetes/community/blob/master/contributors/guide/pull-requests.md#best-practices-for-faster-reviews) by k8s team
 
 ## code reviewing & github
 
@@ -26,6 +25,7 @@ This is an informal, WIP list of the things things I ([@gonzaloserrano](https://
     - test and document your code
     - don't add features you don't need
 - other guidelines:
+    - [How to Write a Git Commit Message])https://cbea.ms/git-commit)
     - prefer documentation as code (example tests files) over READMEs
     - separate the vendor updates in a different commit
     - choose a good GitHub merge strategy:
